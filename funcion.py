@@ -55,7 +55,7 @@ r = [
     l4a, l5a, l6a, l7a, l8a, l9a
 ]
 def draw_screen (x,y,texture,color):
-	r[y][x] = "\33[" + color + "m" + texture + "\033[0m"
+	r[y][x] = "\33[" + str(color) + "m" + texture + "\033[0m"
 	
 def move_character (x,y,character):
 	draw_screen(character["x"],character["y"],".","37")
@@ -91,5 +91,6 @@ def update_screen():
 		for ii in i:
 			printing_line += ii
 		print(printing_line)
+
 
 
