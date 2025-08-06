@@ -1,15 +1,17 @@
 from funcion import *
 import msvcrt
+from bresenham_alg import bresenham_line
 
-
-player =  make_character (4,7,"a","player")
+player =  make_character (4,7,"a", "31" ,"player")
 draw_character (player)
 update_screen()
+print (bresenham_line(2,2,7,8))
+draw_line(2,2,7,8,"a",31)
 
 
 while True :
 
-	if msvcrt.kbhit():         
+	if msvcrt.kbhit ():        #lll 
 		tasto = msvcrt.getch()
 		if tasto == b'a': 
 			move_character (-1,0,player)
