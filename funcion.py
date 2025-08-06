@@ -80,7 +80,7 @@ def draw_character (character):
 def draw_line (x1,y1,x2,y2,texture,color):
 	line = bresenham_line(x1,y1,x2,y2)
 	for i in line :
-		draw_screen(i[0],i[1],"b","32")
+		draw_screen(i[0],i[1], texture , color)
 
 	
 	
@@ -91,4 +91,5 @@ def update_screen():
 		for ii in i:
 			printing_line += ii
 		print(printing_line)
+
 
