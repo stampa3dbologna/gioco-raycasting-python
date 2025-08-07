@@ -63,7 +63,20 @@ def move_character (x,y,character):
 	character["x"] = character["x"] + x
 	character["y"] = character["y"] + y
 	
-	
+	if is_free(new_x, new_y, map_text):
+            draw_screen(character["x"], character["y"], ".", "37") 
+            character["x"] = new_x
+            character["y"] = new_y
+
+def draw_map(map_text):
+    lines = map_text.splitlines()
+    for y in range(len(lines)):
+        for x in range(len(lines[y])):
+            if lines[y][x] == "X":
+                draw_screen(x, y, "X", 34)  
+            else:
+                draw_screen(x, y, ".", 37) 
+		
 	
 def make_character (x,y,texture,color,name):
 	stats_charcter = {
@@ -83,8 +96,6 @@ def draw_line (x1,y1,x2,y2,texture,color):
 	for i in line :
 		draw_screen(i[0],i[1], texture , color)
 
-	
-	
 def update_screen():
 	os.system('cls')
 	for i in r:
@@ -93,5 +104,10 @@ def update_screen():
 			printing_line += ii
 		print(printing_line)
 
-
-
+def is_free(x, y, map_text):
+    lines = map_text.splitlines()
+    if y < 0 or y >= len(lines):
+        return False
+    if x < 0 or x >= len(lines[y]):
+        return False
+    return lines[y][x] != 'X'
