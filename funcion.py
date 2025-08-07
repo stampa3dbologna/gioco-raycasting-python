@@ -1,4 +1,5 @@
 import os
+#from read_file import draw_map, map1
 from bresenham_alg import bresenham_line
 width = 100
 
@@ -58,16 +59,38 @@ r = [
 def draw_screen (x,y,texture,color):
 	r[y][x] = "\33[" + str(color) + "m" + texture + "\033[0m"
 	
-def move_character (x,y,character):
-	draw_screen(character["x"],character["y"], "." ,"37")
-	character["x"] = character["x"] + x
-	character["y"] = character["y"] + y
+with open("map1.txt", "r", encoding="utf-8") as file:
+    map1 = file.read()
+
+
+#disegna la mappa
+def draw_map(map):
+	lines = map.splitlines()
+	print (lines)
+	for i in range(len(lines)):
+		for ii in range(len(lines[i])):
+			if lines[i][ii] == "X":
+				draw_screen(ii, i, lines[i][ii], 34)
 	
-	if is_free(new_x, new_y, map_text):
+def is_free(x, y, map_text):
+    lines = map_text.splitlines()
+    if y < 0 or y >= len(lines):
+        return False
+    if x < 0 or x >= len(lines[y]):
+        return False
+    return lines[y][x] != 'X'
+	
+def move_character (x,y,character):
+	new_x = character["x"] + x
+	new_y = character["y"] + y
+	
+	if is_free(new_x, new_y, map1):
             draw_screen(character["x"], character["y"], ".", "37") 
             character["x"] = new_x
             character["y"] = new_y
 
+
+'''
 def draw_map(map_text):
     lines = map_text.splitlines()
     for y in range(len(lines)):
@@ -77,7 +100,7 @@ def draw_map(map_text):
             else:
                 draw_screen(x, y, ".", 37) 
 		
-	
+'''
 def make_character (x,y,texture,color,name):
 	stats_charcter = {
 	"x":x,
@@ -104,10 +127,4 @@ def update_screen():
 			printing_line += ii
 		print(printing_line)
 
-def is_free(x, y, map_text):
-    lines = map_text.splitlines()
-    if y < 0 or y >= len(lines):
-        return False
-    if x < 0 or x >= len(lines[y]):
-        return False
-    return lines[y][x] != 'X'
+
