@@ -16,19 +16,20 @@ while True :
 	if msvcrt.kbhit ():
 		tasto = msvcrt.getch()
 		if tasto == b'a': 
-			move_character (-1,0,player)
+			move_character (-1,0,player, map1)
 			draw_character (player)
 			update_screen()
 		if tasto == b'd': 
-			move_character (1,0,player)
+			move_character (1,0,player, map1)
 			draw_character (player)
 			update_screen()
 		if tasto == b'w': 
-			move_character (0,-1,player)
+			move_character (0,-1,player, map1)
 			draw_character (player)
 			update_screen()
 		if tasto == b's': 
-			move_character (0,1,player)
+			move_character (0,1,player, map1)
 			draw_character (player)
 			update_screen()
+
 
