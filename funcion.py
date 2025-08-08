@@ -1,7 +1,11 @@
+'''
 import os
-#from read_file import draw_map, map1
+from create_vector import *
 from bresenham_alg import bresenham_line
+import pygame
+
 width = 100
+
 
 l0  = ['.']*width
 l1  = ['.']*width
@@ -56,6 +60,7 @@ r = [
     lu , lv , lw , lx , ly , lz , l0a, l1a, l2a, l3a,
     l4a, l5a, l6a, l7a, l8a, l9a
 ]
+
 def draw_screen (x,y,texture,color):
 	r[y][x] = "\33[" + str(color) + "m" + texture + "\033[0m"
 	
@@ -90,17 +95,7 @@ def move_character (x,y,character):
             character["y"] = new_y
 
 
-'''
-def draw_map(map_text):
-    lines = map_text.splitlines()
-    for y in range(len(lines)):
-        for x in range(len(lines[y])):
-            if lines[y][x] == "X":
-                draw_screen(x, y, "X", 34)  
-            else:
-                draw_screen(x, y, ".", 37) 
-		
-'''
+
 def make_character (x,y,texture,color,name):
 	stats_charcter = {
 	"x":x,
@@ -127,4 +122,6 @@ def update_screen():
 			printing_line += ii
 		print(printing_line)
 
+
+'''
 
