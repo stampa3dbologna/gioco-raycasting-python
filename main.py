@@ -9,13 +9,16 @@ screen = pygame.display.set_mode((1920, 1080))
 clock = pygame.time.Clock()
 running = True
 
+
 vel = 2
 x = 300
-y = 300
+y = 350
 player = pygame.Rect(x, y, 10, 10)
 pygame.draw.rect(screen, (0, 255, 0), player)
 
-wall = pygame.Rect(500, 500, 50, 10)
+map_img = pygame.image.load("Mappa.PNG")
+map_img.set_colorkey((0,0,0))
+wall = map_img
 
 a_pressd = None 
 s_pressd = None 
@@ -77,15 +80,17 @@ while running:
 		new_player = pygame.Rect(new_x, y, 10, 10)
 		if not new_player.colliderect(wall):
 			x = new_x
-	
+			
+	screen.blit(wall,(0,0))	
 	player = pygame.Rect(x, y, 10, 10)
 	pygame.draw.rect(screen, (0, 255, 0), player)	
-	pygame.draw.rect(screen, (0, 0, 255), wall)
+
 	
 	pygame.display.flip()
 	clock.tick(60)  
 
 pygame.quit()
+
 '''
 
 player =  make_character (4,7,"a", "31" ,"player")
@@ -116,5 +121,3 @@ while True :
 			update_screen()
 
 '''
-
-
