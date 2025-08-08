@@ -4,19 +4,16 @@ import msvcrt
 from bresenham_alg import bresenham_line
 import pygame 
 
-
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
 clock = pygame.time.Clock()
 running = True
-
 
 vel = 2
 x = 300
 y = 300
 player = pygame.Rect(x, y, 10, 10)
 pygame.draw.rect(screen, (0, 255, 0), player)
-
 
 wall = pygame.Rect(500, 500, 50, 10)
 
@@ -25,18 +22,14 @@ s_pressd = None
 w_pressd = None 
 d_pressd = None 
 
-
-
 while running:
 
 	screen.fill((0,0,0))
 	
-	#rendo la croce della finestra utilizzabile
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			running = False
 			
-	#controllo dei tasti premuti
 	if pygame.key.get_just_pressed()[pygame.K_a]: 
 		a_pressd = True
 	
@@ -44,22 +37,22 @@ while running:
 		a_pressd = False
 	
 	if a_pressd :
-		x = x - vel
-		while player.colliderect(wall) :
-			x = x + vel * 2
-			player = pygame.Rect(x,y,10,10)
+		new_x = x - vel
+		new_player = pygame.Rect(new_x, y, 10, 10)
+		if not new_player.colliderect(wall):
+			x = new_x
+
 	if pygame.key.get_just_pressed()[pygame.K_s]: 
 		s_pressd = True
 	
 	if pygame.key.get_just_released()[pygame.K_s]:
 		s_pressd = False
 	
-	if s_pressd  :
-		y = y + vel
-		while player.colliderect(wall) :
-			y = y - vel * 2
-			player = pygame.Rect(x,y,10,10)
-		
+	if s_pressd:
+		new_y = y + vel
+		new_player = pygame.Rect(x, new_y, 10, 10)
+		if not new_player.colliderect(wall):
+			y = new_y
 
 	if pygame.key.get_just_pressed()[pygame.K_w]: 
 		w_pressd = True
@@ -67,11 +60,11 @@ while running:
 	if pygame.key.get_just_released()[pygame.K_w]:
 		w_pressd = False
 	
-	if w_pressd :
-		y = y - vel
-		while player.colliderect(wall) :
-			y = y + vel * 2
-			player = pygame.Rect(x,y,10,10)
+	if w_pressd:
+		new_y = y - vel
+		new_player = pygame.Rect(x, new_y, 10, 10)
+		if not new_player.colliderect(wall):
+			y = new_y
 
 	if pygame.key.get_just_pressed()[pygame.K_d]: 
 		d_pressd = True
@@ -79,24 +72,20 @@ while running:
 	if pygame.key.get_just_released()[pygame.K_d]:
 		d_pressd = False
 	
-	if d_pressd  :
-		x = x + vel
-		while player.colliderect(wall) :
-			x = x - vel * 2
-			player = pygame.Rect(x,y,10,10)
+	if d_pressd:
+		new_x = x + vel
+		new_player = pygame.Rect(new_x, y, 10, 10)
+		if not new_player.colliderect(wall):
+			x = new_x
 	
-	#fine controllo tasti premuti
-	
-	player = pygame.Rect(x,y,10,10)
+	player = pygame.Rect(x, y, 10, 10)
 	pygame.draw.rect(screen, (0, 255, 0), player)	
 	pygame.draw.rect(screen, (0, 0, 255), wall)
 	
 	pygame.display.flip()
-
 	clock.tick(60)  
 
 pygame.quit()
-
 '''
 
 player =  make_character (4,7,"a", "31" ,"player")
@@ -127,4 +116,5 @@ while True :
 			update_screen()
 
 '''
+
 
