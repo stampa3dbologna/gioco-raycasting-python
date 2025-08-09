@@ -6,7 +6,7 @@ import pygame
 from create_vector import point_in_direction
 
 pygame.init()
-screen = pygame.display.set_mode((1920, 1080))
+screen = pygame.display.set_mode((1280,720))
 clock = pygame.time.Clock()
 running = True
 
@@ -164,4 +164,5 @@ while True :
 			update_screen()
 
 '''
+
 
