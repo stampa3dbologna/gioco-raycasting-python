@@ -3,7 +3,7 @@ from read_file import *
 import msvcrt
 from bresenham_alg import bresenham_line
 import pygame 
-import create_vector
+from create_vector import point_in_direction
 
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
@@ -164,3 +164,4 @@ while True :
 			update_screen()
 
 '''
+
