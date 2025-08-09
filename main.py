@@ -21,7 +21,7 @@ player_hat = pygame.Rect(x_hat,y_hat ,10,10)
 pygame.draw.rect(screen, (0, 255, 0), player)
 pygame.draw.rect(screen, (127,255,0), player_hat)
 
-map_img = pygame.image.load("Mappa.PNG")
+map_img = pygame.image.load("tridente.png")
 map_img.set_colorkey((0,0,0))
 wall = pygame.Rect(0, 0, 10, 10)
 
