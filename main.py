@@ -1,6 +1,3 @@
-from funcion import *
-from read_file import *
-import msvcrt
 from bresenham_alg import bresenham_line
 import pygame 
 from create_vector import point_in_direction
@@ -193,3 +190,4 @@ while running:
 
 
 pygame.quit()
+
