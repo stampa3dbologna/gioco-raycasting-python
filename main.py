@@ -5,7 +5,7 @@ from bresenham_alg import bresenham_line
 import pygame 
 from create_vector import point_in_direction
 import random
-
+import math
 
 pygame.init()
 screen = pygame.display.set_mode((1280,720))
@@ -135,24 +135,31 @@ while running:
 			y = new_y
 	
 	# raggi multipli
-	fov = 60  # campo visivo
-	step = 1  # distanza tra i vari raggi
+
+	fov = 80  # campo visivo
+	definition = 1
+	step = 1	 # distanza tra i vari raggi
 	max_distance = 500  # quanto diciamo, puo vedere il raggio
-	points = [(x, y)]
+	points = []
 	lenght_ray = []# lunghezza raggi
-	
+
 	for angle_offset in range(-fov // 2, fov // 2 + 1, step):
 		ray_angle = direction + angle_offset
 		xr, yr = x, y
 		distance = 0
 		while not collide_map_point((xr, yr), map_colision) and distance < max_distance:
-			xr, yr = point_in_direction(xr, yr, 5, ray_angle)
-			distance += 5
-		distance = 500 - distance
-		lenght_ray.append(distance)
-		points.append((xr, yr))
+			xr, yr = point_in_direction(xr, yr, definition, ray_angle)
+			distance += definition
+		# correzione fish-eye
+		perp_distance = distance * math.cos(math.radians(angle_offset))		
+		perp_distance = max_distance - perp_distance		
 
-	pygame.draw.polygon(screen, (255, 255, 150, 100), points)
+
+		lenght_ray.append(perp_distance)
+		points.append((int(xr), int(yr)))
+	
+	for i in range(len(points)) :
+		pygame.draw.line(screen,(255,100,0),(x , y) ,(int(points[i][0]),int(points[i][1])) , 2)
 	# Player
 	
 	
@@ -164,16 +171,23 @@ while running:
 	height = screen.get_height()
 	width  = screen.get_width() 
 	line_step_y = height / max_distance 
-	line_step_x = round(width / fov)
+	line_step_x = width / fov
 	color_step = 256 / 500
-	
-	for i in range(fov):
+
+			
+	for i in range(len(lenght_ray)):
 		leght_line = round(lenght_ray[i] * line_step_y)
-		color = round(((lenght_ray[i] * color_step))- 1)
-		start_line = (height / 2) - round(leght_line / 2 )
-		pygame.draw.line(screen,(color,color,color),
-		((i + 1)* line_step_x ,start_line) ,
-		((i + 1)* line_step_x ,start_line + leght_line) , line_step_x)
+		color = int(round(((lenght_ray[i] * color_step))))
+		start_line = int(height / 2) - round(leght_line / 2 )
+		if color > 255 :
+			color = 255
+	#	print(leght_line,lenght_ray[i])
+		if not a_pressd:
+			pygame.draw.line(screen,(color,color,color),
+			(round(((i + 1)* line_step_x)) ,start_line) ,
+			(round(((i + 1)* line_step_x)) ,start_line + leght_line) , round(line_step_x))
+
+
 	pygame.display.flip()
 	clock.tick(60)  
 
