@@ -9,6 +9,10 @@ screen = pygame.display.set_mode((1280,720))
 clock = pygame.time.Clock()
 running = True
 
+# Carica le texture dei muri
+wall_texture = pygame.image.load("MUro.png")  # Crea un'immagine 64x64 o 128x128 per la texture
+wall_texture = pygame.transform.scale(wall_texture, (64, 64))  # Assicurati che la texture sia della dimensione desiderata
+
 vel = 2
 x = 611 
 y = 647
@@ -17,7 +21,7 @@ x_hat, y_hat = point_in_direction(x, y, 15, direction)
 player = pygame.Rect(x, y, 1, 1)
 pygame.draw.rect(screen, (0, 255, 0), player)
 
-map_img = pygame.image.load("tridente.png")
+map_img = pygame.image.load("ciccio.png")
 map_img.set_colorkey((0,0,0))
 
 a_pressd = None 
@@ -78,8 +82,8 @@ while running:
 		squere23,squere24,squere25,squere26,squere27
 	]
 	
-	for i in map_colision:
-		pygame.draw.rect(screen,(0,0,255),i)
+	#for i in map_colision:
+	#	pygame.draw.rect(screen,(0,0,255),i)
 	
 	if m_x != 0:
 		direction = direction + (m_x / 4)
@@ -147,16 +151,12 @@ while running:
 		while not collide_map_point((xr, yr), map_colision) and distance < max_distance:
 			xr, yr = point_in_direction(xr, yr, definition, ray_angle)
 			distance += definition
-		# correzione fish-eye
-		perp_distance = distance * math.cos(math.radians(angle_offset))		
-		perp_distance = max_distance - perp_distance		
+		
+				# rimuoviamo completamente il fisheye e usiamo direttamente la distanza
+		lenght_ray.append(max_distance - distance)
 
-
-		lenght_ray.append(perp_distance)
-		points.append((int(xr), int(yr)))
-	
-	for i in range(len(points)) :
-		pygame.draw.line(screen,(255,100,0),(x , y) ,(int(points[i][0]),int(points[i][1])) , 2)
+	#for i in range(len(points)) :
+	#	pygame.draw.line(screen,(255,100,0),(x , y) ,(int(points[i][0]),int(points[i][1])) , 2)
 	# Player
 	
 	
@@ -176,18 +176,27 @@ while running:
 		leght_line = round(lenght_ray[i] * line_step_y)
 		color = int(round(((lenght_ray[i] * color_step))))
 		start_line = int(height / 2) - round(leght_line / 2 )
-		if color > 255 :
+		if color > 255:
 			color = 255
-	#	print(leght_line,lenght_ray[i])
 		if not a_pressd:
-			pygame.draw.line(screen,(color,color,color),
-			(round(((i + 1)* line_step_x)) ,start_line) ,
-			(round(((i + 1)* line_step_x)) ,start_line + leght_line) , round(line_step_x))
-
-
+			# Calcola la posizione x sulla texture
+			wall_x = points[i][0] % wall_texture.get_width()
+			
+			# Estrae una colonna della texture
+			texture_slice = pygame.Surface((1, wall_texture.get_height()))
+			texture_slice.blit(wall_texture, (0, 0), (wall_x, 0, 1, wall_texture.get_height()))
+			
+			# Scala la slice all'altezza del muro
+			if leght_line > 0:
+				scaled_slice = pygame.transform.scale(texture_slice, (round(line_step_x), leght_line))
+				
+				# Applica l'effetto della distanza (fog)
+				scaled_slice.fill((color, color, color), special_flags=pygame.BLEND_MULT)
+				
+				# Disegna la slice
+				screen.blit(scaled_slice, (round((i + 1) * line_step_x), start_line))
 	pygame.display.flip()
 	clock.tick(60)  
 
 
 pygame.quit()
-
