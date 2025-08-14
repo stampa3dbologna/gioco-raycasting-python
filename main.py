@@ -15,7 +15,7 @@ running = True
 wall_texture = pygame.image.load("MUro.png")  # Crea un'immagine
 wall_texture = pygame.transform.scale(wall_texture, (64, 64)) 
 
-vel = 2
+vel = 4
 x = 611 
 y = 647
 direction = -90
@@ -23,7 +23,7 @@ x_hat, y_hat = point_in_direction(x, y, 15, direction)
 player = pygame.Rect(x, y, 1, 1)
 pygame.draw.rect(screen, (0, 255, 0), player)
 
-mode3d = False
+mode3d = True
 
 a_pressd = None 
 s_pressd = None 
@@ -137,8 +137,8 @@ while running:
 	# raggi multipli
 	fov = 80  # campo visivo
 	definition = 3
-	step = 0.5	 # distanza tra i vari raggi
-	max_distance = 500  # quanto diciamo, puo vedere il raggio
+	step = 0.25	 # distanza tra i vari raggi
+	max_distance = 700  # quanto diciamo, puo vedere il raggio
 	points = []
 	lenght_ray = []  # lunghezza raggi
 
@@ -157,13 +157,14 @@ while running:
 		for i in range(len(points)) :
 			pygame.draw.line(screen,(255,100,0),(x , y) ,(int(points[i][0]),int(points[i][1])) , 2)
 	player = pygame.Rect(x, y, 1, 1)
-	pygame.draw.rect(screen, (0, 255, 0), player)	 
+
+	
 	
 	#inzio del raycasting
 	height = screen.get_height()
 	width  = screen.get_width() 
 	line_step_y = height / max_distance 
-	line_step_x = width / fov
+	line_step_x = width / len(points)
 	color_step = 256 / 500		
 		
 	for i in range(len(lenght_ray)):
@@ -195,5 +196,6 @@ while running:
 		
 	pygame.display.flip()
 	clock.tick(60)
+
 
 pygame.quit()
