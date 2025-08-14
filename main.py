@@ -10,8 +10,8 @@ clock = pygame.time.Clock()
 running = True
 
 # Carica le texture dei muri
-wall_texture = pygame.image.load("MUro.png")  # Crea un'immagine 64x64 o 128x128 per la texture
-wall_texture = pygame.transform.scale(wall_texture, (64, 64))  # Assicurati che la texture sia della dimensione desiderata
+wall_texture = pygame.image.load("MUro.png")  # Crea un'immagine
+wall_texture = pygame.transform.scale(wall_texture, (64, 64)) 
 
 vel = 2
 x = 611 
@@ -200,3 +200,4 @@ while running:
 
 
 pygame.quit()
+
