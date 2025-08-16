@@ -11,19 +11,24 @@ screen = pygame.display.set_mode((1280,720))
 clock = pygame.time.Clock()
 running = True
 
+
 # Carica le texture dei muri
-wall_texture = pygame.image.load("MUro.png")  # Crea un'immagine
+wall_texture = pygame.image.load("Muro.png")  # Crea un'immagine
 wall_texture = pygame.transform.scale(wall_texture, (64, 64)) 
+
+mode3d = False
+
 
 vel = 4
 x = 611 
 y = 647
 direction = -90
-x_hat, y_hat = point_in_direction(x, y, 15, direction)
-player = pygame.Rect(x, y, 1, 1)
-pygame.draw.rect(screen, (0, 255, 0), player)
+x_e = 500
+y_e = 500
+you_viewed_enemy = None
+enemy_viewed_you = None
 
-mode3d = True
+
 
 a_pressd = None 
 s_pressd = None 
@@ -41,6 +46,18 @@ def collide_map_point(point, map):
 		if i.collidepoint(point):
 			return True
 	return False 
+
+def distance_point(point_start, point_end): #teorema di pitagora
+    x1, y1 = point_start
+    x2, y2 = point_end
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)	
+
+def wall_between (start,end):
+	line = bresenham_line(start[0],start[1],end[0],end[1])
+	for i in range(len(line)):
+		if collide_map_point(line[i], map_colision): 
+			return False 
+	return True
 
 while running:
 	screen.fill((128,0,0))
@@ -134,6 +151,18 @@ while running:
 			x = new_x
 			y = new_y
 	
+	#nemico
+	if wall_between((x_e,y_e),(x,y)):
+		no_wall = True
+	else:
+		no_wall = False
+	if distance_point((x_e,y_e),(x,y)) < 400 and no_wall == True:
+		enemy_viewed_you = True
+		enemy = pygame.Rect(x_e - 5,y_e - 5,10,10)
+		if mode3d == False:
+			pygame.draw.rect(screen,(0,0,0),enemy)
+
+
 	# raggi multipli
 	fov = 80  # campo visivo
 	definition = 3
@@ -157,6 +186,7 @@ while running:
 		for i in range(len(points)) :
 			pygame.draw.line(screen,(255,100,0),(x , y) ,(int(points[i][0]),int(points[i][1])) , 2)
 	player = pygame.Rect(x, y, 1, 1)
+
 
 	
 	
